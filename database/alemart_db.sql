@@ -192,21 +192,24 @@ VALUES
 (
 'Administrator',
 'admin',
-'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+'$2a$12$IQ6dBxjqt/YkBiA1RuRoGenFvg9FE3z2nR5P783esIUqXTPVMtWv2', 
+-- admin123
 'admin'
 ),
 
 (
 'Kasir 1',
 'kasir1',
-'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+'$2a$12$P4k12cmdJdIQePeHo4d/6eEwxTjyJqOP8xeRgXGxvNfwx10H9Gidy',
+-- kasir123
 'kasir'
 ),
 
 (
 'Kasir 2',
 'kasir2',
-'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+'$2a$12$lq5ZT1z5GPxyDjlNjQsgXeAZQsU50YEeXMPIjMC9Se3jjTfFOYQLW', 
+-- kasir234
 'kasir'
 );
 

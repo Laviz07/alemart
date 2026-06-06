@@ -3,9 +3,9 @@ session_start();
 include '../../auth/auth_check.php';
 require_once '../../config/config.php';
 
-$page = 'users';
-
+$page = 'dashboard';
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -13,7 +13,7 @@ $page = 'users';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Kelola User | AleMart</title>
+    <title>Dashboard | AleMart</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,8 +33,9 @@ $page = 'users';
 
     <div class="main-content">
 
-        <h1>Kelola User</h1>
+        <h1>Dashboard</h1>
 
+        <div class="coba">p</div>
     </div>
 
     <?php
