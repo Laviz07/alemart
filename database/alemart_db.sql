@@ -15,7 +15,8 @@ CREATE TABLE users (
     nama VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin','kasir') NOT NULL
+    role ENUM('admin','kasir') NOT NULL,
+    avatar VARCHAR(255)
 );
 
 -- =====================================
