@@ -139,7 +139,7 @@ $limit OFFSET $offset"
                                                 <?php if (!empty($user['avatar'])): ?>
 
                                                     <img
-                                                        src="<?= BASE_URL; ?>/assets/img/avatar/<?= $user['avatar']; ?>"
+                                                        src="<?= BASE_URL; ?>/assets/uploads/avatar/<?= $user['avatar']; ?>"
                                                         alt="Avatar"
                                                         class="rounded-circle object-fit-cover border border-2 border-success"
                                                         style="width: 48px; height: 48px;">
