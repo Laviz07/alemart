@@ -1,5 +1,4 @@
 <?php
-session_start();
 include '../../auth/auth_check.php';
 require_once '../../config/config.php';
 
@@ -34,8 +33,6 @@ $page = 'dashboard';
     <div class="main-content">
 
         <h1>Dashboard</h1>
-
-        <div class="coba">p</div>
     </div>
 
     <?php
