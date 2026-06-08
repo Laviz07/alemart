@@ -44,6 +44,51 @@ include '../../includes/header.php';
 include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
 ?>
+
+<?php if (isset($_SESSION['success'])): ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            Swal.fire({
+
+                icon: 'success',
+                title: 'Berhasil',
+                text: '<?= $_SESSION['success']; ?>',
+
+                showConfirmButton: false,
+                timer: 2000
+
+            });
+
+        });
+    </script>
+
+    <?php unset($_SESSION['success']); ?>
+
+<?php endif; ?>
+
+
+<?php if (isset($_SESSION['error'])): ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            Swal.fire({
+
+                icon: 'error',
+                title: 'Oops...',
+                text: '<?= $_SESSION['error']; ?>'
+
+            });
+
+        });
+    </script>
+
+    <?php unset($_SESSION['error']); ?>
+
+<?php endif; ?>
+
 <div class="main-content">
 
     <!-- HEADER -->
@@ -165,10 +210,16 @@ include '../../includes/sidebar.php';
                                                 </a>
 
                                                 <!-- DELETE -->
-                                                <a href="hapus.php?id=<?= $user['id_user']; ?>" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Yakin ingin menghapus user ini?')">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger btn-sm btn-delete"
+                                                    data-id="<?= $user['id_user']; ?>"
+                                                    data-nama="<?= $user['nama']; ?>">
+
                                                     <i class="bi bi-trash"></i>
-                                                </a>
+
+                                                </button>
+
                                             <?php else : ?>
 
                                                 <span class="badge bg-secondary-subtle text-secondary border">
@@ -237,6 +288,32 @@ include '../../includes/footer.php';
     ========================= */
     roleFilter.addEventListener("change", () => {
         filterForm.submit();
+    });
+
+    /* ========================= DELETE CONFIRMATION ========================= */
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const nama = this.dataset.nama;
+
+            Swal.fire({
+                title: 'Hapus?',
+                text: `Anda akan menghapus user ${nama}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `hapus.php?id=${id}`;
+                }
+            });
+        });
     });
 </script>
 

@@ -300,4 +300,4 @@ include '../../includes/sidebar.php';
 </script>
 
 
-<?php include '../../includes/footer_sc.php'; ?>
+<?php include '../../includes/footer_script.php'; ?>
