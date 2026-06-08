@@ -102,6 +102,8 @@ $_SESSION['username'] = $user['username'];
 
 $_SESSION['role'] = $user['role'];
 
+$_SESSION['avatar'] = $user['avatar'];
+
 /*
 |--------------------------------------------------------------------------
 | Redirect

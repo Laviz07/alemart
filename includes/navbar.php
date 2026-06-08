@@ -21,10 +21,19 @@
             <button
                 class="user-dropdown"
                 data-bs-toggle="dropdown">
-
-                <div class="user-avatar">
-                    <?= strtoupper(substr($_SESSION['nama'], 0, 1)); ?>
-                </div>
+                
+                <!-- avatar -->
+                <?php if (!empty($_SESSION['avatar'])): ?>
+                    <img
+                        src="<?= BASE_URL; ?>/assets/uploads/avatar/<?= $_SESSION['avatar']; ?>"
+                        alt="Avatar"
+                        class="rounded-circle object-fit-cover border border-2 border-success"
+                        style="width: 48px; height: 48px;">
+                <?php else: ?>
+                    <div class="user-avatar">
+                        <?= strtoupper(substr($_SESSION['nama'], 0, 1)); ?>
+                    </div>
+                <?php endif ?>
 
                 <div class="user-info d-none d-md-flex">
 
