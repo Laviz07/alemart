@@ -45,6 +45,7 @@ include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
 ?>
 
+<!-- /* --------------------------- POP UP SWEET ALERT SUCCESS --------------------------- */ -->
 <?php if (isset($_SESSION['success'])): ?>
 
     <script>
@@ -68,7 +69,7 @@ include '../../includes/sidebar.php';
 
 <?php endif; ?>
 
-
+<!-- /* ------------------------ POP UP SWEET ALERT ERROR ------------------------ */ -->
 <?php if (isset($_SESSION['error'])): ?>
 
     <script>
