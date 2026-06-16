@@ -41,14 +41,14 @@ include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
 ?>
 
-<div class="main-content" style="background-color:#f8f9fa;min-height:100vh;padding:20px;">
-
+<div class="main-content" style="background-color:#f8f9fa;min-height:100vh;padding:20px;padding-top:80px;">
+    
     <div class="d-flex align-items-center gap-3 mb-4">
         <a href="index.php" class="btn btn-light border-0 shadow-sm rounded-3 px-3 py-2 bg-white text-secondary d-inline-flex align-items-center justify-content-center" style="width:42px;height:42px;">
             <i class="bi bi-arrow-left fs-5"></i>
         </a>
         <div>
-            <h2 class="fw-bold text-dark mb-1" style="font-size:1.6rem;">Tambah Produk</h2>
+            <h2 class="fw-bold text-dark mb-1" style="font-size:1.6rem;" mb-2>Tambah Produk</h2>
             <p class="text-muted mb-0" style="font-size:0.9rem;">Isi semua field yang diperlukan</p>
         </div>
     </div>
@@ -112,8 +112,15 @@ include '../../includes/sidebar.php';
                 <div class="mb-5">
                     <label class="form-label fw-semibold text-secondary mb-2" style="font-size:0.9rem;">Foto Produk</label>
                     <div class="position-relative border rounded-4 p-4 text-center bg-light" style="border-style:dashed!important;border-width:2px!important;border-color:#ced4da!important;">
-                        <input type="file" name="foto_produk" class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor:pointer;" accept="image/jpeg,image/png,image/webp">
-                        <div class="py-3">
+                        <input type="file" id="fotoInput" name="foto_produk"
+                            class="position-absolute top-0 start-0 w-100 h-100 opacity-0"
+                            style="cursor:pointer;" accept="image/jpeg,image/png,image/webp">
+
+                        <!-- Preview: muncul setelah user pilih foto -->
+                        <img id="fotoPreview" src="" class="d-none rounded-3 mb-3 object-fit-cover" style="width:120px;height:120px;">
+
+                        <!-- Default: tampil sebelum ada foto dipilih -->
+                        <div id="fotoDefault" class="py-3">
                             <i class="bi bi-cloud-arrow-up text-muted mb-2 d-block" style="font-size:2.5rem;"></i>
                             <span class="d-block text-dark fw-medium" style="font-size:0.95rem;">Klik untuk upload foto</span>
                             <span class="text-muted d-block mt-1" style="font-size:0.8rem;">(JPG, PNG, WEBP — maks 2MB)</span>
@@ -137,6 +144,7 @@ include '../../includes/sidebar.php';
 <?php include '../../includes/footer.php'; ?>
 
 <script>
+    // ========================= VALIDASI FORM =========================
     const formInputs = document.querySelectorAll('#formTambahProduk input[required], #formTambahProduk select[required]');
     const btnSimpan  = document.getElementById('btnSimpan');
 
@@ -154,6 +162,24 @@ include '../../includes/sidebar.php';
         i.addEventListener('change', cekForm);
     });
     window.addEventListener('DOMContentLoaded', cekForm);
+
+    // ========================= PREVIEW FOTO =========================
+    const fotoInput   = document.getElementById('fotoInput');
+    const fotoPreview = document.getElementById('fotoPreview');
+    const fotoDefault = document.getElementById('fotoDefault');
+
+    fotoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                fotoPreview.src = event.target.result;
+                fotoPreview.classList.remove('d-none');
+                fotoDefault.classList.add('d-none');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
 
 <?php include '../../includes/footer_script.php'; ?>
