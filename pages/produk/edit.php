@@ -65,7 +65,7 @@ include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
 ?>
 
-<div class="main-content" style="background-color:#f8f9fa;min-height:100vh;padding:20px;">
+<div class="main-content" style="background-color:#f8f9fa;min-height:100vh;padding:20px;padding-top:80px;">
 
     <div class="d-flex align-items-center gap-3 mb-4">
         <a href="index.php" class="btn btn-light border-0 shadow-sm rounded-3 px-3 py-2 bg-white text-secondary d-inline-flex align-items-center justify-content-center" style="width:42px;height:42px;">
@@ -143,15 +143,24 @@ include '../../includes/sidebar.php';
                 <div class="mb-5">
                     <label class="form-label fw-semibold text-secondary mb-2" style="font-size:0.9rem;">Ganti Foto <span class="text-muted">(opsional)</span></label>
                     <div class="position-relative border rounded-4 p-4 text-center bg-light" style="border-style:dashed!important;border-width:2px!important;border-color:#ced4da!important;">
-                        <input type="file" name="foto_produk" class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor:pointer;" accept="image/jpeg,image/png,image/webp">
-                        <div class="py-3">
+                        <input type="file" id="fotoInput" name="foto_produk"
+                            class="position-absolute top-0 start-0 w-100 h-100 opacity-0"
+                            style="cursor:pointer;" accept="image/jpeg,image/png,image/webp">
+
+                        <?php if (!empty($produk['foto_produk'])): ?>
+                            <!-- Kalau ada foto lama: langsung tampilkan sebagai preview -->
+                            <img id="fotoPreview"
+                                src="<?= BASE_URL; ?>/assets/uploads/produk/<?= htmlspecialchars($produk['foto_produk']); ?>"
+                                class="rounded-3 mb-3 object-fit-cover" style="width:120px;height:120px;">
+                            <div id="fotoDefault" class="d-none py-3">
+                        <?php else: ?>
+                            <!-- Kalau tidak ada foto: tampilkan placeholder -->
+                            <img id="fotoPreview" src="" class="d-none rounded-3 mb-3 object-fit-cover" style="width:120px;height:120px;">
+                            <div id="fotoDefault" class="py-3">
+                        <?php endif; ?>
                             <i class="bi bi-cloud-arrow-up text-muted mb-2 d-block" style="font-size:2.5rem;"></i>
-                            <?php if (!empty($produk['foto_produk'])): ?>
-                                <span class="d-block text-dark fw-medium" style="font-size:0.95rem;">Foto saat ini: <?= htmlspecialchars($produk['foto_produk']); ?></span>
-                                <span class="text-muted d-block mt-1" style="font-size:0.8rem;">Biarkan kosong jika tidak ingin mengganti</span>
-                            <?php else: ?>
-                                <span class="d-block text-dark fw-medium" style="font-size:0.95rem;">Klik untuk upload foto</span>
-                            <?php endif; ?>
+                            <span class="d-block text-dark fw-medium" style="font-size:0.95rem;">Klik untuk ganti foto</span>
+                            <span class="text-muted d-block mt-1" style="font-size:0.8rem;">(JPG, PNG, WEBP — maks 2MB)</span>
                         </div>
                     </div>
                 </div>
@@ -167,6 +176,26 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 </div>
+
+<script>
+    // ========================= PREVIEW FOTO =========================
+    const fotoInput   = document.getElementById('fotoInput');
+    const fotoPreview = document.getElementById('fotoPreview');
+    const fotoDefault = document.getElementById('fotoDefault');
+
+    fotoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                fotoPreview.src = event.target.result;
+                fotoPreview.classList.remove('d-none'); // tampilkan preview
+                fotoDefault.classList.add('d-none');    // sembunyikan placeholder
+            };
+            reader.readAsDataURL(file); // baca file sebagai URL base64
+        }
+    });
+</script>
 
 <?php include '../../includes/footer.php'; ?>
 <?php include '../../includes/footer_script.php'; ?>
