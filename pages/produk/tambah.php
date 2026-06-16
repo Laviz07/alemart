@@ -3,6 +3,14 @@ include '../../auth/auth_check.php';
 require_once '../../config/config.php';
 require_once '../../config/koneksi.php';
 
+// PROTEKSI ROLE: Jika bukan admin, tendang keluar
+if ($_SESSION['role'] !== 'admin') {
+    $_SESSION['error'] = "Akses ditolak! Halaman tersebut hanya untuk Admin.";
+    header("Location: index.php");
+    exit();
+}
+
+// ... sisa kode di bawahnya tetap sama ...
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_produk = mysqli_real_escape_string($conn, $_POST['nama_produk']);
     $id_kategori = (int)$_POST['id_kategori'];
