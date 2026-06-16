@@ -194,7 +194,7 @@ include '../../includes/sidebar.php';
     </script>
     <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
-
+    
 <script>
     // ========================= AUTO SEARCH =========================
     const filterForm  = document.getElementById("filterForm");

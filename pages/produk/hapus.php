@@ -31,6 +31,6 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 } else {
     $_SESSION['error'] = "ID produk tidak valid.";
 }
-
+    
 header("Location: index.php");
 exit();

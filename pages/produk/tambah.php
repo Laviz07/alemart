@@ -178,5 +178,5 @@ include '../../includes/sidebar.php';
         }
     });
 </script>
-
+        
 <?php include '../../includes/footer_script.php'; ?>
