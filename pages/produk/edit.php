@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stok        = (int)$_POST['stok'];
     $satuan      = mysqli_real_escape_string($conn, $_POST['satuan']);
 
-    $q_lama      = mysqli_query($conn, "SELECT foto_produk FROM produk WHERE id_produk = '$id_produk'");
-    $data_lama   = mysqli_fetch_assoc($q_lama);
+    $q_lama    = mysqli_query($conn, "SELECT foto_produk FROM produk WHERE id_produk = '$id_produk'");
+    $data_lama = mysqli_fetch_assoc($q_lama);
     $foto_produk = $data_lama['foto_produk'];
 
     if (isset($_FILES['foto_produk']) && $_FILES['foto_produk']['error'] === 0) {
@@ -33,17 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $q_update = "UPDATE produk SET 
-                    nama_produk  = '$nama_produk',
-                    id_kategori  = '$id_kategori',
-                    harga_beli   = '$harga_beli',
-                    harga_jual   = '$harga_jual',
-                    stok         = '$stok',
-                    satuan       = '$satuan',
-                    foto_produk  = '$foto_produk'
+                    nama_produk = '$nama_produk',
+                    id_kategori = '$id_kategori',
+                    harga_beli  = '$harga_beli',
+                    harga_jual  = '$harga_jual',
+                    stok        = '$stok',
+                    satuan      = '$satuan',
+                    foto_produk = '$foto_produk'
                  WHERE id_produk = '$id_produk'";
 
     if (mysqli_query($conn, $q_update)) {
-        $_SESSION['sukses'] = "Data produk berhasil diperbarui!";
+        $_SESSION['success'] = "Data produk berhasil diperbarui!";
         header("Location: index.php");
         exit();
     } else {
@@ -144,24 +144,22 @@ include '../../includes/sidebar.php';
                     <label class="form-label fw-semibold text-secondary mb-2" style="font-size:0.9rem;">Ganti Foto <span class="text-muted">(opsional)</span></label>
                     <div class="position-relative border rounded-4 p-4 text-center bg-light" style="border-style:dashed!important;border-width:2px!important;border-color:#ced4da!important;">
                         <input type="file" id="fotoInput" name="foto_produk"
-                            class="position-absolute top-0 start-0 w-100 h-100 opacity-0"
-                            style="cursor:pointer;" accept="image/jpeg,image/png,image/webp">
+                               class="position-absolute top-0 start-0 w-100 h-100 opacity-0"
+                               style="cursor:pointer;" accept="image/jpeg,image/png,image/webp">
 
                         <?php if (!empty($produk['foto_produk'])): ?>
-                            <!-- Kalau ada foto lama: langsung tampilkan sebagai preview -->
                             <img id="fotoPreview"
-                                src="<?= BASE_URL; ?>/assets/uploads/produk/<?= htmlspecialchars($produk['foto_produk']); ?>"
-                                class="rounded-3 mb-3 object-fit-cover" style="width:120px;height:120px;">
+                                 src="<?= BASE_URL; ?>/assets/uploads/produk/<?= htmlspecialchars($produk['foto_produk']); ?>"
+                                 class="rounded-3 mb-3 object-fit-cover" style="width:120px;height:120px;">
                             <div id="fotoDefault" class="d-none py-3">
                         <?php else: ?>
-                            <!-- Kalau tidak ada foto: tampilkan placeholder -->
                             <img id="fotoPreview" src="" class="d-none rounded-3 mb-3 object-fit-cover" style="width:120px;height:120px;">
                             <div id="fotoDefault" class="py-3">
                         <?php endif; ?>
-                            <i class="bi bi-cloud-arrow-up text-muted mb-2 d-block" style="font-size:2.5rem;"></i>
-                            <span class="d-block text-dark fw-medium" style="font-size:0.95rem;">Klik untuk ganti foto</span>
-                            <span class="text-muted d-block mt-1" style="font-size:0.8rem;">(JPG, PNG, WEBP — maks 2MB)</span>
-                        </div>
+                                <i class="bi bi-cloud-arrow-up text-muted mb-2 d-block" style="font-size:2.5rem;"></i>
+                                <span class="d-block text-dark fw-medium" style="font-size:0.95rem;">Klik untuk ganti foto</span>
+                                <span class="text-muted d-block mt-1" style="font-size:0.8rem;">(JPG, PNG, WEBP — maks 2MB)</span>
+                            </div>
                     </div>
                 </div>
 
@@ -177,6 +175,8 @@ include '../../includes/sidebar.php';
     </div>
 </div>
 
+<?php include '../../includes/footer.php'; ?>
+
 <script>
     // ========================= PREVIEW FOTO =========================
     const fotoInput   = document.getElementById('fotoInput');
@@ -189,13 +189,12 @@ include '../../includes/sidebar.php';
             const reader = new FileReader();
             reader.onload = function(event) {
                 fotoPreview.src = event.target.result;
-                fotoPreview.classList.remove('d-none'); // tampilkan preview
-                fotoDefault.classList.add('d-none');    // sembunyikan placeholder
+                fotoPreview.classList.remove('d-none');
+                fotoDefault.classList.add('d-none');
             };
-            reader.readAsDataURL(file); // baca file sebagai URL base64
+            reader.readAsDataURL(file);
         }
     });
 </script>
 
-<?php include '../../includes/footer.php'; ?>
 <?php include '../../includes/footer_script.php'; ?>
