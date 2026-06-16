@@ -26,7 +26,6 @@ include '../../includes/sidebar.php';
 
 <div class="main-content">
 
-    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <div>
             <h2 class="fw-bold mb-1">Transaksi Baru</h2>
@@ -45,7 +44,6 @@ include '../../includes/sidebar.php';
                 <div class="card-body">
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam me-2 text-success"></i>Pilih Produk</h5>
 
-                    <!-- SEARCH PRODUK -->
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-white border-end-0">
                             <i class="bi bi-search"></i>
@@ -54,13 +52,12 @@ include '../../includes/sidebar.php';
                             placeholder="Cari produk...">
                     </div>
 
-                    <!-- GRID PRODUK -->
                     <div class="row g-2" id="produkGrid">
                         <?php foreach ($daftar_produk as $p): ?>
                             <div class="col-sm-6 col-md-4 produk-item"
-                                data-nama="<?= strtolower($p['nama_produk']); ?>">
-                                <div class="card border produk-card h-100"
-                                    style="cursor:pointer;"
+                                data-nama="<?= strtolower(htmlspecialchars($p['nama_produk'])); ?>">
+                                <div class="card border h-100 produk-card"
+                                    style="cursor:pointer; transition: all 0.15s;"
                                     data-id="<?= $p['id_produk']; ?>"
                                     data-nama="<?= htmlspecialchars($p['nama_produk']); ?>"
                                     data-harga="<?= $p['harga_jual']; ?>"
@@ -71,7 +68,7 @@ include '../../includes/sidebar.php';
                                         <p class="text-success fw-bold mb-1 small">
                                             Rp <?= number_format($p['harga_jual'], 0, ',', '.'); ?>
                                         </p>
-                                        <span class="badge bg-light text-dark border small">
+                                        <span class="badge bg-light text-dark border small stok-badge-<?= $p['id_produk']; ?>">
                                             Stok: <?= $p['stok']; ?> <?= $p['satuan']; ?>
                                         </span>
                                     </div>
@@ -96,41 +93,29 @@ include '../../includes/sidebar.php';
                 <div class="card-body">
                     <h5 class="fw-bold mb-3"><i class="bi bi-cart3 me-2 text-success"></i>Keranjang</h5>
 
-                    <!-- ITEM KERANJANG -->
-                    <div id="keranjangList" style="min-height: 120px; max-height: 320px; overflow-y: auto;">
-                        <div id="keranjangKosong" class="text-center py-4 text-muted">
-                            <i class="bi bi-cart-x fs-2 d-block mb-2"></i>
-                            Keranjang masih kosong
-                        </div>
-                    </div>
+                    <div id="keranjangList" style="min-height: 120px; max-height: 320px; overflow-y: auto;"></div>
 
                     <hr>
 
-                    <!-- TOTAL -->
                     <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
                         <span>Total</span>
                         <span class="text-success" id="totalDisplay">Rp 0</span>
                     </div>
 
-                    <!-- BAYAR -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Jumlah Bayar</label>
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
-                            <input type="number" id="inputBayar" class="form-control"
-                                placeholder="0" min="0">
+                            <input type="number" id="inputBayar" class="form-control" placeholder="0" min="0">
                         </div>
-                        <!-- QUICK PAY -->
                         <div class="d-flex gap-2 mt-2 flex-wrap" id="quickPay"></div>
                     </div>
 
-                    <!-- KEMBALIAN -->
                     <div class="d-flex justify-content-between fw-semibold mb-4">
                         <span>Kembalian</span>
                         <span id="kembalianDisplay" class="text-primary">Rp 0</span>
                     </div>
 
-                    <!-- TOMBOL BAYAR -->
                     <button type="button" id="btnBayar" class="btn btn-success w-100 fw-bold py-2" disabled>
                         <i class="bi bi-cash-stack me-2"></i> Proses Pembayaran
                     </button>
@@ -198,64 +183,73 @@ include '../../includes/sidebar.php';
     });
 
     /* ========================= TAMBAH KE KERANJANG ========================= */
-    document.querySelectorAll('.produk-card').forEach(card => {
-        card.addEventListener('click', function () {
-            const id = this.dataset.id;
-            const nama = this.dataset.nama;
-            const harga = parseInt(this.dataset.harga);
-            const stok = parseInt(this.dataset.stok);
+    // Pasang event listener sekali saja ke grid (event delegation)
+    document.getElementById('produkGrid').addEventListener('click', function (e) {
+        const card = e.target.closest('.produk-card');
+        if (!card) return;
 
-            const existing = keranjang.find(i => i.id == id);
-            if (existing) {
-                if (existing.jumlah >= stok) {
-                    Swal.fire({ icon: 'warning', title: 'Stok tidak cukup', timer: 1500, showConfirmButton: false });
-                    return;
-                }
-                existing.jumlah++;
-            } else {
-                keranjang.push({ id, nama, harga, stok, jumlah: 1 });
+        const id    = card.dataset.id;
+        const nama  = card.dataset.nama;
+        const harga = parseInt(card.dataset.harga);
+        const stok  = parseInt(card.dataset.stok);
+
+        const existing = keranjang.find(i => i.id === id);
+        if (existing) {
+            if (existing.jumlah >= stok) {
+                Swal.fire({ icon: 'warning', title: 'Stok tidak cukup', timer: 1500, showConfirmButton: false });
+                return;
             }
-            renderKeranjang();
-        });
+            existing.jumlah++;
+        } else {
+            keranjang.push({ id, nama, harga, stok, jumlah: 1 });
+        }
+
+        renderKeranjang();
     });
 
     /* ========================= RENDER KERANJANG ========================= */
     function renderKeranjang() {
         const list = document.getElementById('keranjangList');
-        const kosong = document.getElementById('keranjangKosong');
 
         if (keranjang.length === 0) {
-            list.innerHTML = '';
-            list.appendChild(kosong);
-            kosong.style.display = '';
+            list.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-cart-x fs-2 d-block mb-2"></i>
+                    Keranjang masih kosong
+                </div>`;
             updateTotal();
             return;
         }
 
-        kosong.style.display = 'none';
-        list.innerHTML = '';
-
-        keranjang.forEach((item, idx) => {
-            const div = document.createElement('div');
-            div.className = 'd-flex align-items-center gap-2 mb-2 p-2 bg-light rounded-3';
-            div.innerHTML = `
+        list.innerHTML = keranjang.map((item, idx) => `
+            <div class="d-flex align-items-center gap-2 mb-2 p-2 bg-light rounded-3">
                 <div class="flex-grow-1">
                     <div class="fw-semibold small">${item.nama}</div>
                     <div class="text-success small">${formatRp(item.harga)}</div>
                 </div>
                 <div class="d-flex align-items-center gap-1">
-                    <button type="button" class="btn btn-outline-secondary btn-sm px-2" onclick="ubahJumlah(${idx}, -1)">−</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm px-2 btn-kurang" data-idx="${idx}">−</button>
                     <span class="fw-bold px-1">${item.jumlah}</span>
-                    <button type="button" class="btn btn-outline-secondary btn-sm px-2" onclick="ubahJumlah(${idx}, 1)">+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm px-2 btn-tambah" data-idx="${idx}">+</button>
                 </div>
                 <div class="text-end" style="min-width:80px">
                     <div class="fw-bold small">${formatRp(item.harga * item.jumlah)}</div>
-                    <button type="button" class="btn btn-link text-danger p-0 small" onclick="hapusItem(${idx})">
+                    <button type="button" class="btn btn-link text-danger p-0 small btn-hapus-item" data-idx="${idx}">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
-            `;
-            list.appendChild(div);
+            </div>
+        `).join('');
+
+        // Event delegation untuk tombol +/-/hapus di keranjang
+        list.querySelectorAll('.btn-kurang').forEach(btn => {
+            btn.addEventListener('click', () => ubahJumlah(parseInt(btn.dataset.idx), -1));
+        });
+        list.querySelectorAll('.btn-tambah').forEach(btn => {
+            btn.addEventListener('click', () => ubahJumlah(parseInt(btn.dataset.idx), 1));
+        });
+        list.querySelectorAll('.btn-hapus-item').forEach(btn => {
+            btn.addEventListener('click', () => hapusItem(parseInt(btn.dataset.idx)));
         });
 
         updateTotal();
@@ -296,13 +290,15 @@ include '../../includes/sidebar.php';
         container.innerHTML = '';
         if (total <= 0) return;
 
-        const options = [total, ...([5000, 10000, 20000, 50000, 100000].map(n => {
+        const pecahan = [1000, 2000, 5000, 10000, 20000, 50000, 100000];
+        const options = new Set();
+        options.add(total);
+        pecahan.forEach(n => {
             const mul = Math.ceil(total / n) * n;
-            return mul;
-        }))];
+            options.add(mul);
+        });
 
-        const unique = [...new Set(options)].sort((a, b) => a - b).slice(0, 4);
-        unique.forEach(val => {
+        [...options].sort((a, b) => a - b).slice(0, 4).forEach(val => {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'btn btn-outline-success btn-sm';
@@ -335,8 +331,7 @@ include '../../includes/sidebar.php';
     function validasiBayar() {
         const total = getTotal();
         const bayar = parseInt(document.getElementById('inputBayar').value) || 0;
-        const valid = keranjang.length > 0 && bayar >= total && total > 0;
-        document.getElementById('btnBayar').disabled = !valid;
+        document.getElementById('btnBayar').disabled = !(keranjang.length > 0 && bayar >= total && total > 0);
     }
 
     /* ========================= MODAL KONFIRMASI ========================= */
@@ -345,14 +340,13 @@ include '../../includes/sidebar.php';
         const bayar = parseInt(document.getElementById('inputBayar').value);
         const kembalian = bayar - total;
 
-        let ringkasan = keranjang.map(i =>
-            `<div class="d-flex justify-content-between small">
+        document.getElementById('modalRingkasan').innerHTML = keranjang.map(i => `
+            <div class="d-flex justify-content-between small">
                 <span>${i.nama} x${i.jumlah}</span>
                 <span>${formatRp(i.harga * i.jumlah)}</span>
-            </div>`
-        ).join('');
+            </div>
+        `).join('');
 
-        document.getElementById('modalRingkasan').innerHTML = ringkasan;
         document.getElementById('modalTotal').textContent = formatRp(total);
         document.getElementById('modalBayar').textContent = formatRp(bayar);
         document.getElementById('modalKembalian').textContent = formatRp(kembalian);
@@ -375,6 +369,9 @@ include '../../includes/sidebar.php';
 
         document.getElementById('formTransaksi').submit();
     });
+
+    // Init keranjang kosong
+    renderKeranjang();
 </script>
 
 <?php include '../../includes/footer_script.php'; ?>
