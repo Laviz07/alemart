@@ -111,7 +111,7 @@ include '../../includes/sidebar.php';
                         <label class="form-label fw-semibold text-secondary mb-2" style="font-size:0.9rem;">Satuan <span class="text-danger">*</span></label>
                         <select name="satuan" class="form-select bg-light border-0 rounded-3" required>
                             <?php
-                            $satuans = ['pcs','bungkus','botol','kaleng','kg','gram','liter','ml','pack','sak','butir'];
+                            $satuans = ['pcs','bungkus','botol','kaleng','pack'];
                             foreach ($satuans as $s):
                             ?>
                                 <option value="<?= $s; ?>" <?= ($produk['satuan'] == $s) ? 'selected' : ''; ?>>
