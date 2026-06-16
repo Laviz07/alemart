@@ -89,7 +89,7 @@ include '../../includes/sidebar.php';
 
         <!-- KANAN: KERANJANG -->
         <div class="col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 80px;">
+            <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: calc(var(--navbar-height, 70px) + 16px); z-index: 100;">
                 <div class="card-body">
                     <h5 class="fw-bold mb-3"><i class="bi bi-cart3 me-2 text-success"></i>Keranjang</h5>
 
