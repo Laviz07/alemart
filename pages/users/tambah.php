@@ -1,6 +1,7 @@
 <?php
-include '../../auth/auth_check.php';
 require_once '../../config/config.php';
+include '../../auth/auth_check.php';
+include '../../auth/isAdmin.php';
 require_once '../../config/koneksi.php';
 
 $page_title = 'Tambah User';
