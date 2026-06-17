@@ -32,9 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['foto_produk']) && $_FILES['foto_produk']['error'] === 0) {
         $ekstensi    = pathinfo($_FILES['foto_produk']['name'], PATHINFO_EXTENSION);
         $foto_produk = time() . '_' . uniqid() . '.' . $ekstensi;
-        if (move_uploaded_file($_FILES['foto_produk']['tmp_name'], '../../assets/uploads/produk/' . $foto_produk)) {
-            if (!empty($data_lama['foto_produk']) && file_exists('../../assets/uploads/produk/' . $data_lama['foto_produk'])) {
-                unlink('../../assets/uploads/produk/' . $data_lama['foto_produk']);
+        
+        // UBAH INI: Penambahan __DIR__ pada move_uploaded_file, file_exists, dan unlink
+        if (move_uploaded_file($_FILES['foto_produk']['tmp_name'], __DIR__ . '/../../assets/uploads/produk/' . $foto_produk)) {
+            if (!empty($data_lama['foto_produk']) && file_exists(__DIR__ . '/../../assets/uploads/produk/' . $data_lama['foto_produk'])) {
+                unlink(__DIR__ . '/../../assets/uploads/produk/' . $data_lama['foto_produk']);
             }
         }
     }
@@ -47,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     stok        = '$stok',
                     satuan      = '$satuan',
                     foto_produk = '$foto_produk'
-                 WHERE id_produk = '$id_produk'";
+                  WHERE id_produk = '$id_produk'";
 
     if (mysqli_query($conn, $q_update)) {
         $_SESSION['success'] = "Data produk berhasil diperbarui!";
@@ -60,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $q_produk = mysqli_query($conn, "SELECT * FROM produk WHERE id_produk = '$id_produk'");
 $produk   = mysqli_fetch_assoc($q_produk);
+
 if (!$produk) { header("Location: index.php"); exit(); }
 
 $kategori_list = mysqli_query($conn, "SELECT * FROM kategori ORDER BY nama_kategori ASC");

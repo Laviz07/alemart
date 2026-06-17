@@ -10,7 +10,6 @@ if ($_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// ... sisa kode di bawahnya tetap sama ...
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_produk = mysqli_real_escape_string($conn, $_POST['nama_produk']);
     $id_kategori = (int)$_POST['id_kategori'];
@@ -18,12 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $harga_jual  = (float)$_POST['harga_jual'];
     $stok        = (int)$_POST['stok'];
     $satuan      = mysqli_real_escape_string($conn, $_POST['satuan']);
+
     $foto_produk = '';
 
     if (isset($_FILES['foto_produk']) && $_FILES['foto_produk']['error'] === 0) {
         $ekstensi    = pathinfo($_FILES['foto_produk']['name'], PATHINFO_EXTENSION);
         $foto_produk = time() . '_' . uniqid() . '.' . $ekstensi;
-        move_uploaded_file($_FILES['foto_produk']['tmp_name'], '../../assets/uploads/produk/' . $foto_produk);
+        // UBAH INI: Tambahkan __DIR__ agar cPanel tahu posisi persis foldernya
+        move_uploaded_file($_FILES['foto_produk']['tmp_name'], __DIR__ . '/../../assets/uploads/produk/' . $foto_produk);
     }
 
     $q = "INSERT INTO produk (id_kategori, nama_produk, harga_beli, harga_jual, stok, satuan, foto_produk)

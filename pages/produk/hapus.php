@@ -23,9 +23,11 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         if ($cek_pembelian['total'] > 0 || $cek_transaksi['total'] > 0) {
             $_SESSION['error'] = "Produk tidak bisa dihapus karena sudah digunakan dalam data pembelian atau transaksi.";
         } else {
-            if (!empty($data['foto_produk']) && file_exists('../../assets/uploads/produk/' . $data['foto_produk'])) {
-                unlink('../../assets/uploads/produk/' . $data['foto_produk']);
+            // UBAH INI: Penambahan __DIR__ agar file gambar terhapus di hosting
+            if (!empty($data['foto_produk']) && file_exists(__DIR__ . '/../../assets/uploads/produk/' . $data['foto_produk'])) {
+                unlink(__DIR__ . '/../../assets/uploads/produk/' . $data['foto_produk']);
             }
+
             if (mysqli_query($conn, "DELETE FROM produk WHERE id_produk = '$id_produk'")) {
                 $_SESSION['success'] = "Produk berhasil dihapus!";
             } else {
