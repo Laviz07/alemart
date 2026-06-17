@@ -17,11 +17,13 @@ Sistem Informasi Toko Kelontong merupakan aplikasi berbasis web yang dibuat meng
 
 ## 👥 Anggota Kelompok
 
-- Ale Awaludin Walid - 241061170005
-- Muhammad Rafisyah Rizkiyawan - 241061170091
-- Muhammad Rivaldi Yusa - 241061170092
-- Muhammad Zidane Akbari - 241061170094
-- Muhamad Yosep Maulana - 241061170152
+| Nama     | NIM          | Modul                                                                                                            |
+| -------- | ------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Rafisyah | 241061170091 | Autentikasi (login & logout), CRUD user, multi role session, header, footer, sidebar/navbar, kelola profile user |
+| Ale      | 241061170005 | CRUD produk, upload gambar produk, search produk, pagination produk, detail produk                               |
+| Zidane   | 241061170094 | CRUD kategori, search kategori, tampilan dashboard dan statistiknya                                              |
+| Yosep    | 241061170152 | CRUD supplier, search supplier, detail supplier, CRUD pembelian                                                  |
+| Rivaldi  | 241061170092 | CRUD transaksi, detail transaksi, cetak transaksi, riwayat transaksi                                             |
 
 ---
 
