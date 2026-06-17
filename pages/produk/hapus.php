@@ -23,7 +23,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         if ($cek_pembelian['total'] > 0 || $cek_transaksi['total'] > 0) {
             $_SESSION['error'] = "Produk tidak bisa dihapus karena sudah digunakan dalam data pembelian atau transaksi.";
         } else {
-            // UBAH INI: Penambahan __DIR__ agar file gambar terhapus di hosting
+            //Penambahan __DIR__ agar file gambar terhapus di hosting
             if (!empty($data['foto_produk']) && file_exists(__DIR__ . '/../../assets/uploads/produk/' . $data['foto_produk'])) {
                 unlink(__DIR__ . '/../../assets/uploads/produk/' . $data['foto_produk']);
             }

@@ -75,7 +75,7 @@ try {
     // ----------------------------------------------------
     // TAHAP D: PEMBATALAN (ROLLBACK) JIKA ERROR
     // ----------------------------------------------------
-    // Jika server ngadat di tengah jalan (misal stok gagal ditarik mundur), maka JANGAN hapus nota pembeliannya agar data tidak cacat.
+    // Jika server ngamuk di tengah jalan (misal stok gagal ditarik mundur), maka JANGAN hapus nota pembeliannya agar data tidak cacat.
     $conn->rollback();
     $_SESSION['error'] = 'Gagal menghapus pembelian: ' . $e->getMessage();
 }

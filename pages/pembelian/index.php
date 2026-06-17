@@ -183,7 +183,7 @@ include __DIR__ . '/../../includes/sidebar.php';
             const id = this.dataset.id;
             Swal.fire({
                 title: 'Hapus Pembelian?',
-                // Peringatan penting: Jika riwayat ini dihapus, stok barang akan ditarik mundur (dikurangi)!
+                //Jika riwayat ini dihapus, stok barang akan ditarik mundur (dikurangi)!
                 text: `Menghapus data ini juga akan MENGURANGI KEMBALI stok produk yang sudah masuk. Lanjutkan?`,
                 icon: 'warning',
                 showCancelButton: true,

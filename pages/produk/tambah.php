@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['foto_produk']) && $_FILES['foto_produk']['error'] === 0) {
         $ekstensi    = pathinfo($_FILES['foto_produk']['name'], PATHINFO_EXTENSION);
         $foto_produk = time() . '_' . uniqid() . '.' . $ekstensi;
-        // UBAH INI: Tambahkan __DIR__ agar cPanel tahu posisi persis foldernya
+        //Tambahkan __DIR__ agar cPanel tahu posisi persis foldernya
         move_uploaded_file($_FILES['foto_produk']['tmp_name'], __DIR__ . '/../../assets/uploads/produk/' . $foto_produk);
     }
 
